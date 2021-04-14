@@ -1,4 +1,8 @@
 defmodule PebbleWeb.Telemetry do
+  @moduledoc """
+  Web telemetry module.
+  """
+
   use Supervisor
   import Telemetry.Metrics
 
