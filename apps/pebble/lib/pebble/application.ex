@@ -1,0 +1,20 @@
+defmodule Pebble.Application do
+  # See https://hexdocs.pm/elixir/Application.html
+  # for more information on OTP Applications
+  @moduledoc false
+
+  use Application
+
+  def start(_type, _args) do
+    children = [
+      # Start the Ecto repository
+      Pebble.Repo,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: Pebble.PubSub}
+      # Start a worker by calling: Pebble.Worker.start_link(arg)
+      # {Pebble.Worker, arg}
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one, name: Pebble.Supervisor)
+  end
+end
