@@ -6,9 +6,10 @@ defmodule Pebble.Repo.Migrations.CreateAccounts do
       add :id, :uuid, primary_key: true
       add :name, :string
       add :email, :string
+      add :password, :string
       add :cpf, :string
       add :balance, :integer, default: 100000
-
+      
       timestamps()
     end
 
