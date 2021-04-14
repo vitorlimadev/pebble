@@ -7,7 +7,7 @@ defmodule Pebble.Repo.Migrations.CreateAccounts do
       add :name, :string
       add :email, :string
       add :cpf, :string
-      add :balance, :integer
+      add :balance, :integer, default: 100000
 
       timestamps()
     end
