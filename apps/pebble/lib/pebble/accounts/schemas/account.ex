@@ -25,5 +25,6 @@ defmodule Pebble.Accounts.Schemas.Account do
     model
     |> cast(params, @possible_params)
     |> change(Argon2.add_hash(params.password))
+    |> change(%{password: nil})
   end
 end
