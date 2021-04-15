@@ -138,6 +138,10 @@ defmodule Pebble.AccountsTest do
       assert account.cpf == cpf
     end
 
+    test "yields error when id is invalid" do
+      {:error, :invalid_info} = Accounts.get_account("invalid id")
+    end
+
     test "yields error when account doesn't exist" do
       assert {:error, :not_found} = Accounts.get_account(Ecto.UUID.generate())
     end
