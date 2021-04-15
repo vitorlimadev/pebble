@@ -10,8 +10,28 @@ defmodule PebbleWeb.AccountsController do
     params
     |> Accounts.create_account()
     |> case do
-      {:ok, _account} -> send_resp(conn, 200, "ok")
-      {:error, _error} -> send_resp(conn, 400, "meh")
+      {:ok, account} ->
+        conn
+        |> put_status(201)
+        |> render("create.json", account: account)
+
+      {:error, error} ->
+        case error do
+          :email_conflict ->
+            conn
+            |> put_status(400)
+            |> render("already_taken.json", key: "Email")
+
+          :cpf_conflict ->
+            conn
+            |> put_status(400)
+            |> render("already_taken.json", key: "CPF")
+
+          :invalid_info ->
+            conn
+            |> put_status(400)
+            |> render("invalid_info.json", error: :invalid_info)
+        end
     end
   end
 end

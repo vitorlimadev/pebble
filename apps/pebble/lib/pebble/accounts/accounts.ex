@@ -23,7 +23,7 @@ defmodule Pebble.Accounts do
   })
   """
   @spec create_account(map) ::
-          {:ok, Account.t()} | {:error, Ecto.Changeset.t() | :cpf_conflict | :email_conflict}
+          {:ok, Account.t()} | {:error, :invalid_info | :cpf_conflict | :email_conflict}
   def create_account(params) do
     with %{valid?: true, changes: changes} <- Inputs.Create.changeset(params),
          %{valid?: true} = unique <- Account.changeset(changes),
@@ -33,7 +33,7 @@ defmodule Pebble.Accounts do
     else
       %{valid?: false} = changeset ->
         Logger.error("Informações incorretas. Erro: #{inspect(changeset)}")
-        {:error, changeset}
+        {:error, :invalid_info}
     end
   rescue
     error in Ecto.ConstraintError ->
