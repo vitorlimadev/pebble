@@ -1,8 +1,8 @@
 # Pebble
 
-Aplicação para o teste final do Programa de Formação Elixir.
+A banking API for the final test of the Elixir's Formation Program at Stone.
 
-## Instalação
+## Instalation
 You will need to have docker, docker_compose, erlang and elixir installed in your machine.
 
 * To start the postgres image, run: 
@@ -22,6 +22,8 @@ You will need to have docker, docker_compose, erlang and elixir installed in you
 ```sh
 	mix phx.server
 ```
+
+## Testing
 
 * To run unit testes
 
