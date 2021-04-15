@@ -28,22 +28,18 @@ defmodule Pebble.Accounts do
     with %{valid?: true, changes: changes} <- Inputs.Create.changeset(params),
          %{valid?: true} = unique <- Account.changeset(changes),
          {:ok, account} <- Repo.insert(unique) do
-      Logger.info("Your account has been created. Congratulations #{account.name}!")
       {:ok, account}
     else
       %{valid?: false} = changeset ->
-        Logger.error("Invalid information. Error: #{inspect(changeset)}")
         {:error, :invalid_info}
     end
   rescue
     error in Ecto.ConstraintError ->
       case error do
         %{constraint: "accounts_cpf_index"} ->
-          Logger.error("Este CPF já está cadastrado.")
           {:error, :cpf_conflict}
 
         %{constraint: "accounts_email_index"} ->
-          Logger.error("Este email já está cadastrado.")
           {:error, :email_conflict}
       end
   end

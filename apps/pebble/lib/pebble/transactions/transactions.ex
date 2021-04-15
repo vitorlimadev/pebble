@@ -41,7 +41,7 @@ defmodule Pebble.Transactions do
              receiver_id: receiver_account.id
            }) do
       if sender_account.balance >= value do
-        Logger.info("You sent R$ #{value / 100} to #{receiver_account.name}!")
+        Logger.info("Email: You sent R$ #{value / 100} to #{receiver_account.name}!")
         Repo.insert(changeset)
       else
         {:error, :insuficient_funds}
