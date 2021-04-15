@@ -14,7 +14,8 @@ defmodule Pebble.Accounts.Schemas.Account do
     field :name, :string
     field :email, :string
     field :cpf, :string
-    field :password, :string
+    field :password, :string, virtual: true
+    field :password_hash, :string
     field :balance, :integer
 
     timestamps()
@@ -23,5 +24,6 @@ defmodule Pebble.Accounts.Schemas.Account do
   def changeset(model \\ %__MODULE__{}, params) do
     model
     |> cast(params, @possible_params)
+    |> change(Argon2.add_hash(params.password))
   end
 end

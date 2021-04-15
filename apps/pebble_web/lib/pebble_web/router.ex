@@ -7,5 +7,8 @@ defmodule PebbleWeb.Router do
 
   scope "/api", PebbleWeb do
     pipe_through :api
+
+    # Accounts
+    post "/accounts", AccountsController, :create
   end
 end
