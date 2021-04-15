@@ -146,4 +146,37 @@ defmodule Pebble.AccountsTest do
       assert {:error, :not_found} = Accounts.get_account(Ecto.UUID.generate())
     end
   end
+
+  describe "dele_account/1" do
+    test "removes the correct account when input is valid" do
+      name = Ecto.UUID.generate()
+      email = "#{Ecto.UUID.generate()}@test.com"
+      password = Ecto.UUID.generate()
+      cpf = "000.000.000-11"
+
+      params = %{
+        name: name,
+        email: email,
+        email_confirmation: email,
+        password: password,
+        cpf: cpf
+      }
+
+      {:ok, account} = Accounts.create_account(params)
+
+      {:ok, deleted_account} = Accounts.delete_account(account.id)
+
+      assert deleted_account.name == name
+      assert deleted_account.email == email
+      assert deleted_account.cpf == cpf
+    end
+
+    test "yields error when id is invalid" do
+      {:error, :invalid_info} = Accounts.delete_account("invalid id")
+    end
+
+    test "yields error when account doesn't exist" do
+      assert {:error, :not_found} = Accounts.delete_account(Ecto.UUID.generate())
+    end
+  end
 end
