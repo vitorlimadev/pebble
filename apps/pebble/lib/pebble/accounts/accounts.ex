@@ -28,11 +28,11 @@ defmodule Pebble.Accounts do
     with %{valid?: true, changes: changes} <- Inputs.Create.changeset(params),
          %{valid?: true} = unique <- Account.changeset(changes),
          {:ok, account} <- Repo.insert(unique) do
-      Logger.info("Sua conta foi criada. Parabéns #{account.name}!")
+      Logger.info("Your account has been created. Congratulations #{account.name}!")
       {:ok, account}
     else
       %{valid?: false} = changeset ->
-        Logger.error("Informações incorretas. Erro: #{inspect(changeset)}")
+        Logger.error("Invalid information. Error: #{inspect(changeset)}")
         {:error, :invalid_info}
     end
   rescue
