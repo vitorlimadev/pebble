@@ -24,15 +24,7 @@ defmodule Pebble.Accounts do
   """
   @spec create_account(map) ::
           {:ok, Account.t()} | {:error, Ecto.Changeset.t() | :cpf_conflict | :email_conflict}
-  def create_account(
-        %{
-          name: _,
-          email: _,
-          email_confirmation: _,
-          password: _,
-          cpf: _
-        } = params
-      ) do
+  def create_account(params) do
     with %{valid?: true, changes: changes} <- Inputs.Create.changeset(params),
          %{valid?: true} = unique <- Account.changeset(changes),
          {:ok, account} <- Repo.insert(unique) do
