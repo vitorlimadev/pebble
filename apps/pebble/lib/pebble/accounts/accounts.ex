@@ -22,24 +22,25 @@ defmodule Pebble.Accounts do
     cpf: "000.000.000-00",
   })
   """
-  @spec create_account(Inputs.Create.t()) ::
+  @spec create_account(map) ::
           {:ok, Account.t()} | {:error, Ecto.Changeset.t() | :cpf_conflict | :email_conflict}
-  def create_account(%Inputs.Create{} = input) do
-    params = %{
-      name: input.name,
-      email: input.email,
-      email_confirmation: input.email_confirmation,
-      password: input.password,
-      cpf: input.cpf
-    }
-
-    with %{valid?: true} = changeset <- Account.changeset(params),
-         {:ok, account} <- Repo.insert(changeset) do
+  def create_account(
+        %{
+          name: _,
+          email: _,
+          email_confirmation: _,
+          password: _,
+          cpf: _
+        } = params
+      ) do
+    with %{valid?: true, changes: changes} <- Inputs.Create.changeset(params),
+         %{valid?: true} = unique <- Account.changeset(changes),
+         {:ok, account} <- Repo.insert(unique) do
       Logger.info("Sua conta foi criada. Parabéns #{account.name}!")
       {:ok, account}
     else
       %{valid?: false} = changeset ->
-        Logger.error("Tivemos um problema ao criar sua conta. Erro: #{inspect(changeset)}")
+        Logger.error("Informações incorretas. Erro: #{inspect(changeset)}")
         {:error, changeset}
     end
   rescue
@@ -51,7 +52,7 @@ defmodule Pebble.Accounts do
 
         %{constraint: "accounts_email_index"} ->
           Logger.error("Este email já está cadastrado.")
-          {:error, "Este CPF já está cadastrado"}
+          {:error, :email_conflict}
       end
   end
 end

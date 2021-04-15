@@ -30,10 +30,5 @@ defmodule Pebble.Accounts.Inputs.Create do
     |> validate_format(:cpf, ~r/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/)
     |> validate_format(:email, ~r/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/)
     |> validate_confirmation(:email)
-    |> make_input_struct()
-  end
-
-  defp make_input_struct(%Ecto.Changeset{} = changeset) do
-    struct(__MODULE__, changeset.changes)
   end
 end
