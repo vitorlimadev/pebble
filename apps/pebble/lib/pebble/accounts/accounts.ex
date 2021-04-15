@@ -13,7 +13,7 @@ defmodule Pebble.Accounts do
 
   It will fail if:
   * Params are missing.
-  * Email is already taken. 
+  * Email is already taken.
   * CPF is already taken.
 
   iex> Accounts.create_account(%{
@@ -53,11 +53,11 @@ defmodule Pebble.Accounts do
 
   It will fail if:
   * ID is invalid.
-  * User doesn't exist. 
+  * User doesn't exist.
 
   iex> Accounts.get_account("b768add8-3223-4355-a127-bdbfe404a353")
   """
-  @spec get_account(binary()) :: {:ok, Account.t()} | {:error, :invalid_info | :not_found}
+  @spec get_account(binary) :: {:ok, Account.t()} | {:error, :invalid_info | :not_found}
   def get_account(account_id) do
     case Ecto.UUID.cast(account_id) do
       {:ok, _} ->
@@ -68,6 +68,23 @@ defmodule Pebble.Accounts do
 
       :error ->
         {:error, :invalid_info}
+    end
+  end
+
+  @doc """
+  Removes an account from the database.
+
+  It will fail if:
+  * ID is invalid.
+  * User doesn't exist.
+
+  iex> Accounts.get_account("b768add8-3223-4355-a127-bdbfe404a353")
+  """
+  @spec delete_account(binary) :: {:ok, binary} | {:error, :invalid_info | :not_found}
+  def delete_account(account_id) do
+    case get_account(account_id) do
+      {:ok, account} -> Repo.delete(account)
+      {:error, error} -> {:error, error}
     end
   end
 end
