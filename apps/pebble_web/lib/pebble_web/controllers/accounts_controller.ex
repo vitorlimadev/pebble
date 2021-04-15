@@ -42,6 +42,21 @@ defmodule PebbleWeb.AccountsController do
     end
   end
 
+  def delete(conn, %{"id" => id}) do
+    id
+    |> Accounts.delete_account()
+    |> case do
+      {:ok, account} ->
+        send_json(conn, 200, "account.json", account: account)
+
+      {:error, :invalid_info} ->
+        send_json(conn, 400, "invalid_info.json")
+
+      {:error, :not_found} ->
+        send_json(conn, 400, "not_found.json")
+    end
+  end
+
   defp send_json(conn, status, view, opts \\ %{}) do
     conn
     |> put_status(status)
