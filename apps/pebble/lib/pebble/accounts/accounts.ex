@@ -52,16 +52,22 @@ defmodule Pebble.Accounts do
   Return an account from the database.
 
   It will fail if:
-  * Id is invalid.
+  * ID is invalid.
   * User doesn't exist. 
 
   iex> Accounts.get_account("b768add8-3223-4355-a127-bdbfe404a353")
   """
-  @spec get_account(Ecto.UUID.t()) :: {:ok, Account.t()} | {:error, :not_found}
+  @spec get_account(binary()) :: {:ok, Account.t()} | {:error, :invalid_info | :not_found}
   def get_account(account_id) do
-    case Repo.get(Account, account_id) do
-      nil -> {:error, :not_found}
-      account -> {:ok, account}
+    case Ecto.UUID.cast(account_id) do
+      {:ok, _} ->
+        case Repo.get(Account, account_id) do
+          nil -> {:error, :not_found}
+          account -> {:ok, account}
+        end
+
+      :error ->
+        {:error, :invalid_info}
     end
   end
 end

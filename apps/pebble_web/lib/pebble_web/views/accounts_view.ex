@@ -1,7 +1,7 @@
 defmodule PebbleWeb.AccountsView do
   use PebbleWeb, :view
 
-  def render("create.json", %{account: account}) do
+  def render("account.json", %{account: account}) do
     %{
       account: %{
         id: account.id,
@@ -20,9 +20,15 @@ defmodule PebbleWeb.AccountsView do
     }
   end
 
-  def render("invalid_info.json", %{error: :invalid_info}) do
+  def render("invalid_info.json", %{}) do
     %{
       error: "Invalid params."
+    }
+  end
+
+  def render("not_found.json", %{}) do
+    %{
+      error: "Account not found."
     }
   end
 end
