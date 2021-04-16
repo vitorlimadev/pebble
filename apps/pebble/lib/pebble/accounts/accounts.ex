@@ -25,8 +25,11 @@ defmodule Pebble.Accounts do
   @spec create_account(map) ::
           {:ok, Account.t()} | {:error, :invalid_info | :cpf_conflict | :email_conflict}
   def create_account(params) do
+    # Validating input
     with %{valid?: true, changes: changes} <- Inputs.Create.changeset(params),
+         # Checking if the account doesn't exist and hashing it's password.
          %{valid?: true} = unique <- Account.changeset(changes),
+         # Inserting into the repository.
          {:ok, account} <- Repo.insert(unique) do
       {:ok, account}
     else
