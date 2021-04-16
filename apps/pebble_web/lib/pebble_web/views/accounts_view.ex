@@ -8,6 +8,7 @@ defmodule PebbleWeb.AccountsView do
         name: account.name,
         email: account.email,
         cpf: account.cpf,
+        balance: account.balance,
         inserted_at: account.inserted_at,
         updated_at: account.updated_at
       }

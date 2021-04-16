@@ -11,5 +11,7 @@ defmodule PebbleWeb.Router do
     # Accounts
     post "/accounts", AccountsController, :create
     get "/accounts/:id", AccountsController, :show
+    # Transactions
+    post "/transactions", TransactionsController, :create
   end
 end

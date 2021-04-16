@@ -18,9 +18,9 @@ defmodule PebbleWeb.TransactionsView do
     }
   end
 
-  def render("insuficient_funds.json", %{}) do
+  def render("insuficient_funds.json", %{difference: difference}) do
     %{
-      error: "Sender account has insuficient funds."
+      error: "R$ #{div(difference, 100)} is missing to fullfil the transaction."
     }
   end
 end

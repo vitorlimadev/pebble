@@ -30,7 +30,7 @@ defmodule Pebble.Accounts do
          {:ok, account} <- Repo.insert(unique) do
       {:ok, account}
     else
-      %{valid?: false} = changeset ->
+      %{valid?: false} ->
         {:error, :invalid_info}
     end
   rescue
