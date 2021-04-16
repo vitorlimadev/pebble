@@ -29,9 +29,9 @@ defmodule Pebble.TransactionsTest do
 
       {:ok, transaction} =
         Transactions.send_money(%{
-          value: value,
-          sender_account: sender_account,
-          receiver_account: receiver_account
+          "value" => value,
+          "sender_id" => sender_account.id,
+          "receiver_id" => receiver_account.id
         })
 
       assert transaction.sender_id == sender_account.id
@@ -40,7 +40,7 @@ defmodule Pebble.TransactionsTest do
     end
 
     test "yields error when sender has insuficient funds" do
-      value = 1000
+      value = 100_100
 
       sender_info = %{
         name: "Joe Doe",
@@ -58,19 +58,15 @@ defmodule Pebble.TransactionsTest do
         cpf: "123.456.789-02"
       }
 
-      {:ok, sender} = Accounts.create_account(sender_info)
+      {:ok, sender_account} = Accounts.create_account(sender_info)
 
-      sender_account = Map.put(sender, :balance, value - 100)
+      {:ok, receiver_account} = Accounts.create_account(receiver_info)
 
-      {:ok, receiver} = Accounts.create_account(receiver_info)
-
-      receiver_account = Map.put(receiver, :balance, value)
-
-      assert {:error, :insuficient_funds} =
+      assert {:error, {:missing_funds, _}} =
                Transactions.send_money(%{
-                 value: value,
-                 sender_account: sender_account,
-                 receiver_account: receiver_account
+                 "value" => value,
+                 "sender_id" => sender_account.id,
+                 "receiver_id" => receiver_account.id
                })
     end
   end
