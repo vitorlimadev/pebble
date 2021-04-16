@@ -39,7 +39,7 @@ defmodule Pebble.Transactions do
       }) do
     # Validating IDs
     with _ <- Ecto.UUID.cast!(sender_id),
-         _ <- Ecto.UUID.cast(receiver_id),
+         _ <- Ecto.UUID.cast!(receiver_id),
          # Getting resources from Repo
          sender_account <- Repo.get!(Account, sender_id),
          receiver_account <- Repo.get!(Account, receiver_id),
