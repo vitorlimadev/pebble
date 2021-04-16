@@ -29,9 +29,9 @@ defmodule Pebble.TransactionsTest do
 
       {:ok, transaction} =
         Transactions.send_money(%{
-          "value" => value,
-          "sender_id" => sender_account.id,
-          "receiver_id" => receiver_account.id
+          value: value,
+          sender_id: sender_account.id,
+          receiver_id:receiver_account.id
         })
 
       assert transaction.sender_id == sender_account.id
@@ -63,11 +63,11 @@ defmodule Pebble.TransactionsTest do
       {:ok, receiver_account} = Accounts.create_account(receiver_info)
 
       assert {:error, {:missing_funds, _}} =
-               Transactions.send_money(%{
-                 "value" => value,
-                 "sender_id" => sender_account.id,
-                 "receiver_id" => receiver_account.id
-               })
+        Transactions.send_money(%{
+          value: value,
+          sender_id: sender_account.id,
+          receiver_id:receiver_account.id
+        })
     end
   end
 end

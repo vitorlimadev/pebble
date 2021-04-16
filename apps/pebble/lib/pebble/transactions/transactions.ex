@@ -24,16 +24,16 @@ defmodule Pebble.Transactions do
            })
   """
   @spec send_money(%{
-          binary => non_neg_integer(),
-          binary => binary,
-          binary => binary
+          value: non_neg_integer(),
+          sender_id: binary,
+          receiver_id: binary
         }) ::
           {:ok, Transaction.t()}
-          | {:error, :invalid_id | :account_not_found | {:missing_funds, integer}}
+          | {:error, :invalid_info | :not_found | {:missing_funds, integer}}
   def send_money(%{
-        "value" => value,
-        "sender_id" => sender_id,
-        "receiver_id" => receiver_id
+        value: value,
+        sender_id: sender_id,
+        receiver_id: receiver_id
       }) do
     # Validating IDs
     with _ <- Ecto.UUID.cast!(sender_id),
@@ -68,34 +68,34 @@ defmodule Pebble.Transactions do
     end
   rescue
     e in Ecto.CastError ->
-      IO.inspect(e)
-      {:error, :invalid_id}
+      Logger.error(e)
+      {:error, :invalid_info}
 
     e in Ecto.NoResultsError ->
-      IO.inspect(e)
-      {:error, :account_not_found}
+      Logger.error(e)
+      {:error, :not_found}
   end
 
-  # @doc """
-  # Return an transaction from the database.
+  @doc """
+  Return an transaction from the database.
 
-  # It will fail if:
-  # * ID is invalid.
-  # * User doesn't exist.
+  It will fail if:
+  * ID is invalid.
+  * User doesn't exist.
 
-  # iex> Accounts.get_account("b768add8-3223-4355-a127-bdbfe404a353")
-  # """
-  # @spec get_transaction(binary) :: {:ok, Account.t()} | {:error, :invalid_info | :not_found}
-  # def get_account(account_id) do
-  #   case Ecto.UUID.cast(account_id) do
-  #     {:ok, _} ->
-  #       case Repo.get(Account, account_id) do
-  #         nil -> {:error, :not_found}
-  #         account -> {:ok, account}
-  #       end
+  iex> Accounts.get_account("b768add8-3223-4355-a127-bdbfe404a353")
+  """
+  @spec get_transaction(binary) :: {:ok, Transaction.t()} | {:error, :invalid_info | :not_found}
+  def get_transaction(transaction_id) do
+    case Ecto.UUID.cast(transaction_id) do
+      {:ok, _} ->
+        case Repo.get(Transaction, transaction_id) do
+          nil -> {:error, :not_found}
+          transaction -> {:ok, transaction}
+        end
 
-  #     :error ->
-  #       {:error, :invalid_info}
-  #   end
-  # end
+      :error ->
+        {:error, :invalid_info}
+    end
+  end
 end
