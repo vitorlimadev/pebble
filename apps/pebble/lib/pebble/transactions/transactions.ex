@@ -11,6 +11,8 @@ defmodule Pebble.Transactions do
   @doc """
   Creates a new transaction between two accounts.
 
+  * value = 100 is R$ 1,00
+
   It will fail if:
   * One of the accounts doesn't exist.
   * The sender account doesn't have enough money in it's balance.
@@ -81,7 +83,7 @@ defmodule Pebble.Transactions do
 
   It will fail if:
   * ID is invalid.
-  * User doesn't exist.
+  * Account doesn't exist.
 
   iex> Accounts.get_account("b768add8-3223-4355-a127-bdbfe404a353")
   """
