@@ -33,7 +33,9 @@ defmodule Pebble.MixProject do
       {:ecto_sql, "~> 3.4"},
       {:postgrex, ">= 0.0.0"},
       {:jason, "~> 1.0"},
-      {:argon2_elixir, "~> 2.4"}
+      {:argon2_elixir, "~> 2.4"},
+      {:broadway_kafka, "~> 0.1.1"},
+      {:brod, "~> 3.15"}
     ]
   end
 

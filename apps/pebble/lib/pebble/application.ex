@@ -5,6 +5,7 @@ defmodule Pebble.Application do
 
   def start(_type, _args) do
     children = [
+      Watcher,
       Pebble.Repo,
       {Phoenix.PubSub, name: Pebble.PubSub}
     ]
